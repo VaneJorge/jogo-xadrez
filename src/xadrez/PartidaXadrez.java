@@ -1,5 +1,7 @@
 package xadrez;
 
+import java.awt.MultipleGradientPaint.ColorSpaceType;
+
 import tabuleiro.Peca;
 import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
@@ -7,13 +9,18 @@ import xadrez.pecas.Rei;
 import xadrez.pecas.Torre;
 
 public class PartidaXadrez {
+	
+	private int turno;
+	private Cor jogadorAtual;
 	private Tabuleiro tabuleiro;
 
 	public PartidaXadrez() {
 		tabuleiro = new Tabuleiro(8, 8);
+		turno = 1;
+		jogadorAtual = Cor.WHITE;
 		setupInicial();
 	}
-
+	
 	public PecaXadrez[][] getPecas() {
 		PecaXadrez[][] mat = new PecaXadrez[tabuleiro.getLinhas()][tabuleiro.getColunas()];
 		for (int i = 0; i < tabuleiro.getLinhas(); i++) {
@@ -36,6 +43,7 @@ public class PartidaXadrez {
 		validaPosicaoOrigem(origem);
 		validaPosicaoDestino(origem, destino);
 		Peca capturaPeca = realizaMovimento(origem, destino);
+		proximoTurno();
 		return (PecaXadrez) capturaPeca;
 	}
 
@@ -50,6 +58,9 @@ public class PartidaXadrez {
 		if (!tabuleiro.jaExistePeca(posicao))
 			throw new ExcecaoXadrez("Nao ha essa posicao no tabuleiro");
 
+		if(jogadorAtual != ((PecaXadrez) tabuleiro.peca(posicao)).getCor())
+			throw new ExcecaoXadrez("A peca escolhida nao eh sua");
+			
 		if (!tabuleiro.peca(posicao).existePossibilidadeDeMover())
 			throw new ExcecaoXadrez("Nao eh possivel mover essa peca");
 
@@ -64,6 +75,11 @@ public class PartidaXadrez {
 		tabuleiro.lugarPeca(peca, new PosicaoXadrez(coluna, linha).toPosicao());
 	}
 
+	private void proximoTurno() {
+		turno++;
+		jogadorAtual = (jogadorAtual == Cor.WHITE ? Cor.BLACK : Cor.WHITE);
+	}
+	
 	private void setupInicial() {
 		lugarNovaPeca('c', 1, new Torre(tabuleiro, Cor.WHITE));
 		lugarNovaPeca('c', 2, new Torre(tabuleiro, Cor.WHITE));
@@ -78,5 +94,13 @@ public class PartidaXadrez {
 		lugarNovaPeca('e', 7, new Torre(tabuleiro, Cor.BLACK));
 		lugarNovaPeca('e', 8, new Torre(tabuleiro, Cor.BLACK));
 		lugarNovaPeca('d', 8, new Rei(tabuleiro, Cor.BLACK));
+	}
+	
+	public int getTurno() {
+		return turno;
+	}
+	
+	public Cor getJogadorAtual() {
+		return jogadorAtual;
 	}
 }
