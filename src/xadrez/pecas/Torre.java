@@ -4,7 +4,7 @@ import tabuleiro.Tabuleiro;
 import xadrez.Cor;
 import xadrez.PecaXadrez;
 
-public class Torre extends PecaXadrez{
+public class Torre extends PecaXadrez {
 
 	public Torre(Tabuleiro tabuleiro, Cor cor) {
 		super(tabuleiro, cor);
@@ -13,5 +13,11 @@ public class Torre extends PecaXadrez{
 	@Override
 	public String toString() {
 		return "R";
+	}
+
+	@Override
+	public boolean[][] possiveisMovimentos() {
+		boolean[][] mat = new boolean[getTabuleiro().getLinhas()][getTabuleiro().getColunas()];
+		return mat;
 	}
 }
