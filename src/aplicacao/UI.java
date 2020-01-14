@@ -38,7 +38,7 @@ public class UI {
 		System.out.print("\033[H\033[2J");
 		System.out.flush();
 	}
-	
+
 	public static void printPartida(PartidaXadrez partidaXadrez, List<PecaXadrez> capturadas) {
 		printTabuleiro(partidaXadrez.getPecas());
 		System.out.println();
@@ -46,6 +46,8 @@ public class UI {
 		System.out.println();
 		System.out.println("Turno: " + partidaXadrez.getTurno());
 		System.out.println("Aguardando jogador: " + partidaXadrez.getJogadorAtual());
+		if (partidaXadrez.getCheck())
+			System.out.println("CHECK!");
 	}
 
 	public static void printTabuleiro(PecaXadrez[][] pecas) {
@@ -98,21 +100,22 @@ public class UI {
 		}
 
 	}
-	
+
 	private static void printPecasCapturadas(List<PecaXadrez> capturadas) {
-		List<PecaXadrez> brancas = capturadas.stream().filter(x -> x.getCor() == Cor.WHITE).collect(Collectors.toList());
+		List<PecaXadrez> brancas = capturadas.stream().filter(x -> x.getCor() == Cor.WHITE)
+				.collect(Collectors.toList());
 		List<PecaXadrez> pretas = capturadas.stream().filter(x -> x.getCor() == Cor.BLACK).collect(Collectors.toList());
-		
+
 		System.out.println("Pecas capturadas: ");
 		System.out.print("Brancas: ");
 		System.out.print(ANSI_WHITE);
 		System.out.println(Arrays.toString(brancas.toArray()));
 		System.out.print(ANSI_RESET);
-		
+
 		System.out.print("Pretas: ");
 		System.out.print(ANSI_YELLOW);
 		System.out.println(Arrays.toString(pretas.toArray()));
 		System.out.print(ANSI_RESET);
-		
+
 	}
 }
