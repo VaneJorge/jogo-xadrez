@@ -1,6 +1,5 @@
 package xadrez;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,6 +7,7 @@ import java.util.stream.Collectors;
 import tabuleiro.Peca;
 import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
+import xadrez.pecas.Peao;
 import xadrez.pecas.Rei;
 import xadrez.pecas.Torre;
 
@@ -81,7 +81,7 @@ public class PartidaXadrez {
 	}
 
 	private void desfazerMovimento(Posicao origem, Posicao destino, Peca pecaCapturada) {
-		PecaXadrez p = (PecaXadrez)tabuleiro.removePeca(destino);
+		PecaXadrez p = (PecaXadrez) tabuleiro.removePeca(destino);
 		p.decrementaContadorMovimento();
 		tabuleiro.lugarPeca(p, origem);
 
@@ -174,12 +174,29 @@ public class PartidaXadrez {
 	}
 
 	private void setupInicial() {
-		lugarNovaPeca('h', 7, new Torre(tabuleiro, Cor.WHITE));
-		lugarNovaPeca('d', 1, new Torre(tabuleiro, Cor.WHITE));
+		lugarNovaPeca('a', 1, new Torre(tabuleiro, Cor.WHITE));
 		lugarNovaPeca('e', 1, new Rei(tabuleiro, Cor.WHITE));
+		lugarNovaPeca('h', 1, new Torre(tabuleiro, Cor.WHITE));
+		lugarNovaPeca('a', 2, new Peao(tabuleiro, Cor.WHITE));
+		lugarNovaPeca('b', 2, new Peao(tabuleiro, Cor.WHITE));
+		lugarNovaPeca('c', 2, new Peao(tabuleiro, Cor.WHITE));
+		lugarNovaPeca('d', 2, new Peao(tabuleiro, Cor.WHITE));
+		lugarNovaPeca('e', 2, new Peao(tabuleiro, Cor.WHITE));
+		lugarNovaPeca('f', 2, new Peao(tabuleiro, Cor.WHITE));
+		lugarNovaPeca('g', 2, new Peao(tabuleiro, Cor.WHITE));
+		lugarNovaPeca('h', 2, new Peao(tabuleiro, Cor.WHITE));
 
-		lugarNovaPeca('b', 8, new Torre(tabuleiro, Cor.BLACK));
-		lugarNovaPeca('a', 8, new Rei(tabuleiro, Cor.BLACK));
+		lugarNovaPeca('a', 8, new Torre(tabuleiro, Cor.BLACK));
+		lugarNovaPeca('e', 8, new Rei(tabuleiro, Cor.BLACK));
+		lugarNovaPeca('h', 8, new Torre(tabuleiro, Cor.BLACK));
+		lugarNovaPeca('a', 7, new Peao(tabuleiro, Cor.BLACK));
+		lugarNovaPeca('b', 7, new Peao(tabuleiro, Cor.BLACK));
+		lugarNovaPeca('c', 7, new Peao(tabuleiro, Cor.BLACK));
+		lugarNovaPeca('d', 7, new Peao(tabuleiro, Cor.BLACK));
+		lugarNovaPeca('e', 7, new Peao(tabuleiro, Cor.BLACK));
+		lugarNovaPeca('f', 7, new Peao(tabuleiro, Cor.BLACK));
+		lugarNovaPeca('g', 7, new Peao(tabuleiro, Cor.BLACK));
+		lugarNovaPeca('h', 7, new Peao(tabuleiro, Cor.BLACK));
 	}
 
 	public int getTurno() {
