@@ -22,6 +22,7 @@ public class PartidaXadrez {
 	private boolean check;
 	private boolean checkMate;
 	private PecaXadrez enPassantVulnerable;
+	private PecaXadrez promovida;
 
 	private List<Peca> pecasNoTabuleiro = new ArrayList<>();
 	private List<Peca> pecasCapturadas = new ArrayList<>();
@@ -65,6 +66,16 @@ public class PartidaXadrez {
 
 		check = (testaCheck(oponente(jogadorAtual))) ? true : false;
 
+		// #movimentoespecial promocao
+		promovida = null;
+		if (pecaMovida instanceof Peao) {
+			if ((pecaMovida.getCor() == Cor.WHITE && destino.getLinha() == 0)
+					|| (pecaMovida.getCor() == Cor.BLACK && destino.getLinha() == 7)) {
+				promovida = (PecaXadrez) tabuleiro.peca(destino);
+				promovida = trocaPecaPromocao("Q");
+			}
+		}
+
 		if (testaCheckMate(oponente(jogadorAtual))) {
 			checkMate = true;
 		} else {
@@ -79,6 +90,35 @@ public class PartidaXadrez {
 		}
 
 		return (PecaXadrez) pecaCapturada;
+	}
+
+	public PecaXadrez trocaPecaPromocao(String tipo) {
+		if (promovida == null)
+			throw new IllegalStateException("Nao ha peca para ser promovida");
+
+		if (!tipo.equals("B") && !tipo.equals("N") && !tipo.equals("R") && !tipo.equals("Q"))
+			throw new IllegalStateException("Tipo invalido de promocao");
+
+		Posicao pos = promovida.getPosicaoXadrez().toPosicao();
+		Peca p = tabuleiro.removePeca(pos);
+		pecasNoTabuleiro.remove(p);
+
+		PecaXadrez novaPeca = novaPeca(tipo, promovida.getCor());
+		tabuleiro.lugarPeca(novaPeca, pos);
+		pecasNoTabuleiro.add(novaPeca);
+
+		return novaPeca;
+	}
+
+	private PecaXadrez novaPeca(String tipo, Cor cor) {
+		if (tipo.contentEquals("B"))
+			return new Bispo(tabuleiro, cor);
+		if (tipo.contentEquals("N"))
+			return new Cavalo(tabuleiro, cor);
+		if (tipo.contentEquals("Q"))
+			return new Rainha(tabuleiro, cor);
+
+		return new Torre(tabuleiro, cor);
 	}
 
 	private Peca realizaMovimento(Posicao origem, Posicao destino) {
@@ -306,5 +346,9 @@ public class PartidaXadrez {
 
 	public PecaXadrez getEnPassantVulnerable() {
 		return enPassantVulnerable;
+	}
+
+	public PecaXadrez getPromovida() {
+		return promovida;
 	}
 }
